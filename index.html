@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Creator Pro | Дипломна робота</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="templates.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<div class="app-wrapper">
+    
+    <aside class="editor-sidebar no-print">
+        <div class="editor-header">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h2><i class="fa-solid fa-pen-nib"></i> CV Creator</h2>
+            <p>Професійний конструктор резюме</p>
+        </div>
+        <button id="theme-toggle" class="btn-theme" title="Змінити тему">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+    </div>
+    <div style="margin-top: 15px;">
+        <label style="font-size: 12px; font-weight: bold; color: #64748b;">Дизайн резюме:</label>
+            <select id="template-selector" class="form-control" style="margin-top: 5px;">
+                <option value="">Modern (Стандарт)</option>
+                <option value="template-minimal">Minimal (Журнальний)</option>
+                <option value="template-creative">Creative (Темний сайдбар)</option>
+                <option value="template-corporate">Corporate (Бізнес)</option>
+                <option value="template-elegant">Elegant (Вишуканий)</option>
+                <option value="template-tech">Tech (IT Style)</option>
+                <option value="template-compact">Compact (Щільний)</option>
+            </select>
+    </div>
+    </div>
+
+        <form id="resume-form" onsubmit="return false;">
+            
+            <div class="editor-section">
+                <h3 class="section-title"><i class="fa-solid fa-user"></i> Особисті дані</h3>
+                <div class="form-group">
+                    <label>Прізвище та Ім'я</label>
+                    <input type="text" id="inp-name" class="form-control" placeholder="Олександр Коваленко">
+                </div>
+                <div class="form-group">
+                    <label>Бажана посада</label>
+                    <input type="text" id="inp-title" class="form-control" placeholder="Full Stack Developer">
+                </div>
+                <div class="form-group">
+    <label>Фото профілю</label>
+    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+        <input type="file" id="inp-photo" class="form-control" accept="image/*">
+        <button type="button" onclick="removePhoto()" id="btn-remove-photo" style="display: none; border: none; background: #ef4444; color: white; border-radius: 5px; width: 40px; height: 38px; cursor: pointer;">
+            <i class="fa-solid fa-trash"></i>
+        </button>
+    </div>
+
+    <div id="photo-controls" style="display: none; background: #f1f5f9; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
+        <label style="font-size: 11px; margin-bottom: 2px;">Масштаб (Zoom)</label>
+        <input type="range" id="inp-zoom" min="0.5" max="3" step="0.1" value="1" style="width: 100%; margin-bottom: 8px;">
+        
+        <label style="font-size: 11px; margin-bottom: 2px;">Посунути по горизонталі (X)</label>
+        <input type="range" id="inp-pos-x" min="-100" max="100" step="1" value="0" style="width: 100%; margin-bottom: 8px;">
+        
+        <label style="font-size: 11px; margin-bottom: 2px;">Посунути по вертикалі (Y)</label>
+        <input type="range" id="inp-pos-y" min="-100" max="100" step="1" value="0" style="width: 100%;">
+    </div>
+</div>
+                <div class="form-group">
+                    <label>Про мене (Summary)</label>
+                    <textarea id="inp-summary" rows="4" class="form-control" placeholder="Коротко про ваш досвід..."></textarea>
+                </div>
+            </div>
+
+            <div class="editor-section">
+                <h3 class="section-title"><i class="fa-solid fa-address-book"></i> Контакти</h3>
+                <div class="form-row two-col">
+                    <div class="form-group">
+                        <label>Телефон</label>
+                        <input type="tel" id="inp-phone" class="form-control" placeholder="+380...">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="inp-email" class="form-control" placeholder="me@example.com">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Адреса</label>
+                    <input type="text" id="inp-address" class="form-control" placeholder="Київ, Україна">
+                </div>
+                <div class="form-group">
+                    <label>LinkedIn / Portfolio</label>
+                    <input type="text" id="inp-linkedin" class="form-control" placeholder="linkedin.com/in/...">
+                </div>
+            </div>
+
+            <div class="editor-section">
+                <div class="section-header-row">
+                    <h3 class="section-title"><i class="fa-solid fa-briefcase"></i> Досвід роботи</h3>
+                    <button type="button" onclick="addJob()" class="btn-add">
+                        <i class="fa-solid fa-plus"></i> Додати
+                    </button>
+                </div>
+                
+                <div id="jobs-editor-container"></div>
+            </div>
+
+            <div class="editor-section">
+                <h3 class="section-title"><i class="fa-solid fa-code"></i> Проект (Pet Project)</h3>
+                <div class="form-group">
+                    <label>Назва проекту</label>
+                    <input type="text" id="inp-proj-name" class="form-control" placeholder="Інтернет-магазин">
+                </div>
+                <div class="form-group">
+                    <label>Технології (Stack)</label>
+                    <input type="text" id="inp-proj-stack" class="form-control" placeholder="React, Node.js, MongoDB">
+                </div>
+                <div class="form-group">
+                    <label>Опис проекту</label>
+                    <textarea id="inp-proj-desc" rows="3" class="form-control" placeholder="Розробив систему корзини..."></textarea>
+                </div>
+            </div>
+
+            <div class="editor-section">
+                <h3 class="section-title"><i class="fa-solid fa-graduation-cap"></i> Освіта</h3>
+                <div class="form-group">
+                    <label>Навчальний заклад</label>
+                    <input type="text" id="inp-edu-place" class="form-control" placeholder="Національний Університет">
+                </div>
+                <div class="form-group">
+                    <label>Спеціальність</label>
+                    <input type="text" id="inp-edu-degree" class="form-control" placeholder="Комп'ютерні науки">
+                </div>
+                <div class="form-group">
+                    <label>Роки навчання</label>
+                    <input type="text" id="inp-edu-time" class="form-control" placeholder="2019 - 2023">
+                </div>
+            </div>
+
+            <div class="editor-section">
+                <h3 class="section-title"><i class="fa-solid fa-list-check"></i> Скіли та Мови</h3>
+                <div class="form-group">
+                    <label>Навички (через кому)</label>
+                    <textarea id="inp-skills" rows="3" class="form-control" placeholder="HTML, CSS, JS, Git"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Мови (через кому)</label>
+                    <input type="text" id="inp-languages" class="form-control" placeholder="Українська, Англійська B2"></input>
+                </div>
+            </div>
+
+            <div class="editor-actions">
+                <button class="btn btn-primary" onclick="printResume()">
+                    <i class="fa-solid fa-download"></i> PDF
+                </button>
+                <button class="btn btn-secondary" onclick="resetForm()">
+                    <i class="fa-solid fa-trash"></i> Скинути
+                </button>
+            </div>
+        </form>
+    </aside>
+
+    <main class="preview-area">
+        <div class="resume-paper" id="resume-preview">
+            
+            <div class="resume-sidebar">
+                <div class="profile-photo-container">
+                    <img src="" alt="Profile Photo" id="out-photo" class="profile-img" style="display:none;">
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Контакти</h3>
+                    <ul>
+                        <li id="li-phone"><span class="icon"><i class="fa-solid fa-phone"></i></span> <span id="out-phone"></span></li>
+                        <li id="li-email"><span class="icon"><i class="fa-solid fa-envelope"></i></span> <span id="out-email"></span></li>
+                        <li id="li-address"><span class="icon"><i class="fa-solid fa-map-pin"></i></span> <span id="out-address"></span></li>
+                        <li id="li-linkedin"><span class="icon"><i class="fa-brands fa-linkedin"></i></span> <span id="out-linkedin"></span></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Навички</h3>
+                    <ul id="out-skills-list" class="skills-list"></ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Мови</h3>
+                    <ul id="out-lang-list" class="skills-list"></ul>
+                </div>
+            </div>
+
+            <div class="resume-main">
+                <header class="resume-header">
+                    <h1 id="out-name">Ім'я Прізвище</h1>
+                    <h2 id="out-title">Посада</h2>
+                </header>
+
+                <section class="main-section">
+                    <h3 class="main-title"><i class="fa-solid fa-user-pen"></i> Про мене</h3>
+                    <p id="out-summary" class="section-content"></p>
+                </section>
+
+                <section class="main-section">
+                    <h3 class="main-title"><i class="fa-solid fa-briefcase"></i> Досвід роботи</h3>
+                    <div id="out-jobs-container"></div>
+                </section>
+
+                <section class="main-section" id="sec-projects">
+                    <h3 class="main-title"><i class="fa-solid fa-rocket"></i> Проекти</h3>
+                    <div class="experience-item">
+                        <div class="exp-header">
+                            <h4 class="exp-position" id="out-proj-name"></h4>
+                            <span class="exp-company" id="out-proj-stack" style="color: #666; font-weight: 400;"></span>
+                        </div>
+                        <div class="exp-desc">
+                            <p id="out-proj-desc"></p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="main-section">
+                    <h3 class="main-title"><i class="fa-solid fa-graduation-cap"></i> Освіта</h3>
+                    <div class="experience-item">
+                        <div class="exp-header">
+                            <h4 class="exp-position" id="out-edu-degree"></h4>
+                            <span class="exp-company" id="out-edu-place"></span>
+                        </div>
+                        <div class="exp-date" id="out-edu-time"></div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+</div>
+<div id="react-job-assistant"></div>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel" src="tracker.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>

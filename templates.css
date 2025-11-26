@@ -1,0 +1,448 @@
+/* ========================================= */
+/* TEMPLATE 1: MODERN (За замовчуванням)     */
+/* ========================================= */
+/* Використовує налаштування з style.css */
+
+
+/* ========================================= */
+/* TEMPLATE 2: MINIMAL (Виправлено шрифт)    */
+/* ========================================= */
+.template-minimal {
+    --cv-sidebar-bg: #ffffff;
+    --cv-sidebar-text: #000000;
+    --cv-accent: #000000;
+    --cv-primary: #000000;
+    --cv-text: #1a1a1a;
+    --cv-muted: #f3f4f6;
+    --cv-timeline-line: #000000;
+}
+
+/* Шрифт із засічками для всього шаблону */
+.template-minimal,
+.template-minimal h1, .template-minimal h2, .template-minimal h3, .template-minimal h4, 
+.template-minimal p, .template-minimal span, .template-minimal li,
+.template-minimal .exp-position, /* <--- Додано явно */
+.template-minimal .exp-company { /* <--- Додано явно */
+    font-family: 'Georgia', 'Times New Roman', serif !important;
+}
+
+/* Далі код без змін... */
+.template-minimal::before { display: none; }
+.template-minimal .resume-sidebar {
+    background-color: white;
+    border-right: 1px solid #e5e5e5;
+    color: black;
+}
+.template-minimal .resume-sidebar .icon {
+    background: transparent;
+    color: black;
+    box-shadow: none;
+    width: auto; height: auto; font-size: 14px; margin-right: 5px;
+}
+.template-minimal .sidebar-title, .template-minimal .main-title {
+    color: black; border-bottom: 2px solid black; text-transform: uppercase; font-weight: 900; letter-spacing: 1px;
+}
+.template-minimal #out-name { text-transform: uppercase; letter-spacing: 2px; }
+.template-minimal .experience-item {
+    border-left: 4px solid black; padding-left: 20px; padding-bottom: 0; margin-bottom: 30px;
+}
+.template-minimal .experience-item::before, .template-minimal .experience-item::after { display: none !important; }
+.template-minimal .exp-date { background: transparent; color: #444; font-style: italic; padding: 0; font-weight: normal; font-size: 13px; margin-top: 2px; }
+
+/* ========================================= */
+/* TEMPLATE 3: CREATIVE (Темний сайдбар)     */
+/* ========================================= */
+.template-creative {
+    grid-template-columns: 65% 35%;
+    --cv-sidebar-bg: #0f172a; /* Глибокий синій */
+}
+
+.template-creative .resume-sidebar {
+    order: 2;
+    background-color: var(--cv-sidebar-bg);
+    color: white;
+    text-align: right;
+}
+
+.template-creative .resume-main {
+    order: 1;
+    padding-right: 40px;
+    padding-left: 40px;
+}
+
+/* Виправляємо колір тексту в сайдбарі на білий */
+.template-creative .resume-sidebar h3,
+.template-creative .resume-sidebar li,
+.template-creative .resume-sidebar span, 
+.template-creative .resume-sidebar p,
+.template-creative .resume-sidebar .icon {
+    color: #ffffff !important;
+}
+
+.template-creative .sidebar-title {
+    color: #38bdf8 !important; /* Яскраво-блакитний заголовок */
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.template-creative .resume-sidebar li {
+    justify-content: flex-end;
+}
+
+/* Іконки ховаємо для чистоти */
+.template-creative .resume-sidebar .icon {
+    display: none;
+}
+
+.template-creative .skills-list li {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+}
+
+/* Стилізація лівої частини */
+.template-creative #out-name {
+    color: var(--cv-sidebar-bg);
+}
+
+.template-creative .main-title {
+    color: var(--cv-sidebar-bg);
+    border-bottom: 3px solid #38bdf8; /* Блакитне підкреслення */
+}
+
+/* ... (Тут твої старі стилі Minimal та Creative) ... */
+
+
+/* ========================================= */
+/* TEMPLATE 4: CORPORATE (Виправлено)        */
+/* ========================================= */
+.template-corporate {
+    --cv-sidebar-bg: #1e3a8a; /* Navy Blue */
+    --cv-sidebar-text: #ffffff;
+    --cv-accent: #1e3a8a;
+    --cv-primary: #2563eb;
+    --cv-timeline-line: #cbd5e1;
+}
+
+.template-corporate .resume-sidebar {
+    background-color: var(--cv-sidebar-bg);
+    color: white;
+}
+
+/* Примусово фарбуємо текст у білий */
+.template-corporate .resume-sidebar h3,
+.template-corporate .resume-sidebar li,
+.template-corporate .resume-sidebar span,
+.template-corporate .resume-sidebar p {
+    color: white !important;
+}
+
+/* ІКОНКИ: Біле коло, синій значок всередині */
+.template-corporate .resume-sidebar .icon {
+    background: white;
+    color: var(--cv-sidebar-bg); /* Синій колір іконки */
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Щоб не сплющувались */
+}
+
+/* Захист шрифту іконок */
+.template-corporate .icon i {
+    font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands" !important;
+}
+
+.template-corporate .sidebar-title {
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    color: #93c5fd !important;
+}
+
+/* Основна частина */
+.template-corporate .resume-header {
+    border-bottom: 4px solid var(--cv-sidebar-bg);
+    padding-bottom: 10px;
+}
+
+.template-corporate #out-name {
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 42px;
+}
+
+.template-corporate .main-title {
+    background: #f1f5f9;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border-bottom: none;
+    color: var(--cv-sidebar-bg);
+}
+
+.template-corporate .skills-list li {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+}
+/* ========================================= */
+/* ========================================= */
+/* TEMPLATE 5: ELEGANT (Виправлено шрифт)    */
+/* ========================================= */
+.template-elegant {
+    --cv-sidebar-bg: #fff;
+    --cv-accent: #b45309;
+    --cv-primary: #78350f;
+    --cv-text: #444;
+}
+
+/* Примусово Georgia для всього тексту */
+.template-elegant h1, .template-elegant h2, .template-elegant h3, .template-elegant h4,
+.template-elegant p, .template-elegant span, .template-elegant li, .template-elegant div,
+.template-elegant .exp-position, /* <--- Додано явно */
+.template-elegant .exp-company { /* <--- Додано явно */
+    font-family: 'Georgia', serif !important;
+}
+
+.template-elegant .resume-header {
+    text-align: center;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+}
+
+.template-elegant #out-name {
+    font-size: 48px;
+    font-weight: normal;
+    letter-spacing: -1px;
+    color: black;
+}
+
+.template-elegant #out-title {
+    color: var(--cv-accent);
+    font-style: italic;
+    font-size: 20px;
+}
+
+.template-elegant .resume-sidebar {
+    background: white;
+    border-right: 1px solid #f3f4f6;
+    color: #333;
+}
+
+.template-elegant .resume-sidebar .icon {
+    background: transparent;
+    color: var(--cv-accent);
+    border: 1px solid var(--cv-accent);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.template-elegant .icon i {
+    font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands" !important;
+}
+
+.template-elegant .sidebar-title,
+.template-elegant .main-title {
+    text-align: center;
+    color: var(--cv-accent) !important;
+    border-bottom: 1px solid var(--cv-accent);
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.template-elegant .profile-photo-container {
+    border-color: var(--cv-accent);
+    border-width: 2px;
+}
+
+.template-elegant .experience-item::before {
+    background: var(--cv-accent);
+    border-color: var(--cv-accent);
+}
+
+.template-elegant .experience-item {
+    border-left-color: #e5e7eb;
+}
+/* ========================================= */
+/* TEMPLATE 6: TECH (Виправлено шрифт)       */
+/* ========================================= */
+.template-tech {
+    --cv-sidebar-bg: #111;
+    --cv-accent: #10b981;
+    --cv-primary: #059669;
+}
+
+/* Примусово змінюємо шрифт для ВСІХ текстових елементів, включаючи посаду */
+.template-tech h1, .template-tech h2, .template-tech h3, .template-tech h4,
+.template-tech p, .template-tech span, .template-tech li, 
+.template-tech .exp-position,  /* <--- Додано явно */
+.template-tech .exp-company,   /* <--- Додано явно */
+.template-tech .exp-date {
+    font-family: 'Courier New', 'Fira Code', monospace !important;
+}
+
+.template-tech .resume-sidebar {
+    background-color: #171717;
+    color: #00ff00;
+    border-right: 2px solid #333;
+}
+
+.template-tech .resume-sidebar h3,
+.template-tech .resume-sidebar span,
+.template-tech .resume-sidebar li,
+.template-tech .resume-sidebar p {
+    color: #e5e5e5 !important;
+}
+
+.template-tech .resume-sidebar .icon {
+    background: #333;
+    color: #10b981;
+    border-radius: 4px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.template-tech .icon i {
+    font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands" !important;
+}
+
+.template-tech .sidebar-title {
+    color: #10b981 !important;
+    border-bottom: 2px dashed #333;
+}
+
+.template-tech .profile-photo-container {
+    border-radius: 0;
+    border: 2px dashed #10b981;
+}
+
+.template-tech #out-name {
+    color: black;
+    letter-spacing: -2px;
+}
+
+.template-tech #out-name::before {
+    content: '> ';
+    color: #10b981;
+    font-weight: bold;
+}
+
+.template-tech .main-title {
+    background: black;
+    color: white;
+    padding: 2px 8px;
+    display: inline-block;
+    border-bottom: none;
+}
+
+.template-tech .skills-list li {
+    border: 1px solid #333;
+    border-radius: 0;
+    background: #f5f5f5;
+    color: black;
+}
+/* ========================================= */
+/* TEMPLATE 7: COMPACT (Щільний, сайдбар справа) */
+/* ========================================= */
+.template-compact {
+    grid-template-columns: 70% 30%; /* Більше місця для контенту */
+    font-size: 13px; /* Трохи менший шрифт */
+}
+
+/* Сайдбар справа */
+.template-compact .resume-sidebar {
+    order: 2;
+    background: #f8f9fa;
+    border-left: 4px solid #333;
+    text-align: left;
+    padding: 20px;
+}
+
+.template-compact .resume-main {
+    order: 1;
+    padding: 30px;
+}
+
+/* Дуже компактні відступи */
+.template-compact .sidebar-section,
+.template-compact .main-section {
+    margin-bottom: 20px;
+}
+
+.template-compact .resume-header {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #333;
+    padding-bottom: 15px;
+}
+
+.template-compact #out-name {
+    font-size: 28px;
+    margin: 0;
+}
+
+.template-compact .experience-item {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+}
+
+.template-compact .sidebar-title {
+    font-size: 14px;
+    background: #333;
+    color: white;
+    padding: 5px;
+    text-align: center;
+}
+
+/* ========================================= */
+/* 8. ФІКС ДЛЯ ДОВГИХ ПОСИЛАНЬ (CRITICAL FIX) */
+/* ========================================= */
+
+/* Змушуємо довгі слова (URL, Email) переноситися, а не розтягувати блок */
+.resume-sidebar, 
+.resume-main, 
+.resume-paper p, 
+.resume-paper li, 
+.resume-paper a, 
+.resume-paper span {
+    word-wrap: break-word;      /* Старий стандарт */
+    overflow-wrap: break-word;  /* Новий стандарт */
+    word-break: break-word;     /* Для дуже довгих слів без пробілів */
+    hyphens: auto;              /* Додає переноси, якщо мова підтримується */
+}
+
+/* Гарантуємо, що сітка не ламається */
+.resume-paper {
+    /* minmax(0, 1fr) дозволяє колонкам стискатися, навіть якщо контент довгий */
+    /* Це замінює старі відсотки на більш стабільні */
+    grid-template-columns: minmax(0, 35%) minmax(0, 65%);
+}
+
+/* Оновлюємо сітку для шаблонів у templates.css через !important, 
+   щоб перебити налаштування вище, якщо треба */
+
+/* Для Creative та Tech шаблонів, де сайдбар справа або інші пропорції */
+.template-creative {
+    grid-template-columns: minmax(0, 65%) minmax(0, 35%) !important;
+}
+
+.template-compact {
+    grid-template-columns: minmax(0, 70%) minmax(0, 30%) !important;
+}
+
+/* Додатковий захист для посилань */
+.resume-sidebar a {
+    display: inline-block; /* Щоб переноси працювали коректно */
+    max-width: 100%;
+}
