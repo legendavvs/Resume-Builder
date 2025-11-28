@@ -24,13 +24,12 @@
 
 /* --- DARK MODE THEME --- */
 [data-theme="dark"] {
-    /* Інвертуємо кольори інтерфейсу */
-    --ui-bg: #0f172a;            /* Темно-синій фон (Slate 900) */
-    --ui-sidebar: #1e293b;       /* Темніша панель (Slate 800) */
-    --ui-text: #f1f5f9;          /* Світлий текст */
-    --ui-text-light: #94a3b8;    /* Сірий текст */
-    --ui-border: #334155;        /* Темні рамки */
-    --ui-accent: #818cf8;        /* Світліший акцент для темного фону */
+    --ui-bg: #0f172a;            /* Slate 900 */
+    --ui-sidebar: #1e293b;       /* Slate 800 */
+    --ui-text: #f1f5f9;          
+    --ui-text-light: #94a3b8;    
+    --ui-border: #334155;        
+    --ui-accent: #818cf8;        
     --ui-accent-hover: #6366f1;
     --ui-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
 }
@@ -38,17 +37,17 @@
 /* Стилі для карток у темній темі */
 [data-theme="dark"] .editor-section,
 [data-theme="dark"] .job-card {
-    background-color: #1e293b; /* Темний фон карток */
+    background-color: #1e293b;
     border-color: #334155;
 }
 
 [data-theme="dark"] .editor-header {
-    background: rgba(30, 41, 59, 0.9); /* Темна прозора шапка */
+    background: rgba(30, 41, 59, 0.9);
     border-bottom-color: #334155;
 }
 
 [data-theme="dark"] .form-control {
-    background-color: #0f172a; /* Темні інпути */
+    background-color: #0f172a;
     color: #f1f5f9;
     border-color: #334155;
 }
@@ -68,7 +67,7 @@
     background-color: #475569;
 }
 
-/* Кнопка зміни теми (Стиль) */
+/* Кнопка зміни теми */
 .btn-theme {
     background: transparent;
     border: 1px solid var(--ui-border);
@@ -87,6 +86,7 @@
     background-color: var(--ui-border);
     transform: rotate(15deg);
 }
+
 /* Скидання стилів */
 * { box-sizing: border-box; outline: none; }
 
@@ -107,7 +107,6 @@ body {
     height: 100vh;
 }
 
-/* Скролбар */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
@@ -156,7 +155,6 @@ body {
     padding-bottom: 120px;
 }
 
-/* Картки секцій */
 .editor-section {
     background: #fff;
     border: 1px solid var(--ui-border);
@@ -171,7 +169,6 @@ body {
     border-color: #cbd5e1;
 }
 
-/* Заголовок секції + Кнопка справа */
 .section-header-row {
     display: flex;
     justify-content: space-between;
@@ -192,13 +189,13 @@ body {
     font-weight: 700;
 }
 
-/* --- СТИЛІ ДЛЯ ДИНАМІЧНИХ КАРТОК (JOBS) --- */
+/* --- ДИНАМІЧНІ КАРТКИ (JOBS) --- */
 .job-card {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
     padding: 15px;
-    padding-top: 35px; /* Місце для кнопки видалення */
+    padding-top: 35px;
     margin-bottom: 15px;
     position: relative;
     animation: slideDown 0.3s ease-out;
@@ -209,7 +206,6 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Кнопка видалення (смітник) */
 .btn-delete {
     position: absolute;
     top: 8px;
@@ -231,7 +227,6 @@ body {
     background: #fee2e2;
 }
 
-/* Кнопка додати (+ Add) */
 .btn-add {
     background: #e0e7ff;
     color: var(--ui-accent);
@@ -251,7 +246,7 @@ body {
     background: #c7d2fe;
 }
 
-/* Поля вводу (Inputs) */
+/* Inputs */
 .form-group { margin-bottom: 12px; }
 .form-row { display: flex; gap: 15px; }
 .two-col .form-group { flex: 1; }
@@ -284,7 +279,7 @@ label {
 
 textarea.form-control { resize: vertical; }
 
-/* Нижні кнопки (PDF/Reset) */
+/* Нижні кнопки */
 .editor-actions {
     position: fixed;
     bottom: 0;
@@ -345,15 +340,18 @@ textarea.form-control { resize: vertical; }
     overflow-y: auto;
 }
 
-/* ПАПІР (А4) */
+/* ПАПІР (А4) - ОНОВЛЕНО ДЛЯ Grid */
 .resume-paper {
     width: 210mm;
     min-height: 297mm;
     background: white;
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
     display: grid;
-    grid-template-columns: 35% 65%;
+    /* Жорстка сітка в міліметрах для стабільності */
+    grid-template-columns: 75mm 135mm;
+    align-items: stretch;
     position: relative;
+    overflow: hidden;
 }
 
 /* Декор зверху */
@@ -365,6 +363,25 @@ textarea.form-control { resize: vertical; }
     background: linear-gradient(90deg, var(--cv-accent), var(--cv-primary));
 }
 
+/* ФІКС ДЛЯ ДОВГИХ СЛІВ (LinkedIn тощо) */
+.resume-sidebar, 
+.resume-main, 
+.resume-paper p, 
+.resume-paper li, 
+.resume-paper a, 
+.resume-paper span {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    min-width: 0; /* Важливо для Grid */
+    max-width: 100%;
+}
+
+.resume-sidebar a {
+    display: inline-block;
+    max-width: 100%;
+}
+
 /* --- RESUME SIDEBAR --- */
 .resume-sidebar {
     background-color: #f8fafc;
@@ -373,8 +390,7 @@ textarea.form-control { resize: vertical; }
     text-align: left;
 }
 
-/* --- ЦЕНТРУВАННЯ ФОТО (Оновлено) --- */
-/* ОНОВЛЕНО: Стилі для фото */
+/* ФОТО */
 .profile-photo-container {
     width: 140px;
     height: 140px;
@@ -382,7 +398,7 @@ textarea.form-control { resize: vertical; }
     border-radius: 50%;
     border: 4px solid white;
     box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    overflow: hidden; /* Обрізає все, що вилазить за коло */
+    overflow: hidden;
     position: relative;
     background-color: #e2e8f0;
     z-index: 1;
@@ -391,21 +407,13 @@ textarea.form-control { resize: vertical; }
 .profile-img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Це стандартне заповнення */
-    
-    /* ДЛЯ РУЧНОГО ПОЗИЦІОНУВАННЯ: */
+    object-fit: cover;
     position: absolute;
-    top: 0;
-    left: 0;
-    
-    /* Це важливо: перехід буде плавним при русі повзунків */
+    top: 0; left: 0;
     transition: transform 0.1s linear; 
 }
-.profile-img:not([src]) {
-    display: none; 
-}
 
-.profile-img { width: 100%; height: 100%; object-fit: cover; }
+.profile-img:not([src]) { display: none; }
 
 .sidebar-section { margin-bottom: 40px; }
 
@@ -429,7 +437,6 @@ textarea.form-control { resize: vertical; }
     display: flex;
     align-items: center;
     gap: 12px;
-    word-break: break-word;
 }
 
 .resume-sidebar .icon {
@@ -446,7 +453,6 @@ textarea.form-control { resize: vertical; }
     flex-shrink: 0;
 }
 
-/* Skills Pills */
 .skills-list li {
     display: inline-block;
     background: white;
@@ -497,61 +503,47 @@ textarea.form-control { resize: vertical; }
 .main-title i { color: var(--cv-primary); opacity: 0.8; }
 .section-content { font-size: 14px; line-height: 1.7; color: #555; text-align: justify; }
 
-/* --- TIMELINE EXPERIENCE (Виправлена версія) --- */
+/* TIMELINE EXPERIENCE */
 .experience-item {
     position: relative;
-    padding-left: 35px; /* Відступ тексту від лінії */
-    padding-bottom: 30px; /* Відстань між роботами */
+    padding-left: 35px;
+    padding-bottom: 30px;
 }
 
-/* Прибираємо відступ у останнього елемента, щоб не висів у повітрі */
-.experience-item:last-child {
-    padding-bottom: 0;
-}
+.experience-item:last-child { padding-bottom: 0; }
 
-/* КРУЖЕЧОК (Точка на лінії) */
 .experience-item::before {
     content: '';
     position: absolute;
-    /* Центрування: Лінія має ширину 2px. Круг 12px. 
-       (12 - 2) / 2 = 5px. Зсуваємо вліво на 5px + ширина самої лінії. */
     left: 0; 
-    transform: translateX(-50%); /* Ідеальне центрування відносно лінії */
-    top: 4px; /* Підганяємо під висоту шрифта заголовку */
+    transform: translateX(-50%);
+    top: 4px;
     width: 12px;
     height: 12px;
     border-radius: 50%;
     background: white;
     border: 2px solid var(--cv-primary);
-    z-index: 2; /* Щоб був ПОВЕРХ лінії */
+    z-index: 2;
 }
 
-/* ЛІНІЯ (З'єднувач) */
 .experience-item::after {
     content: '';
     position: absolute;
     left: 0;
-    /* Лінія починається від центру кружечка і йде вниз */
     top: 10px; 
-    /* Висота 100% означає "на всю висоту контенту" + 30px padding-bottom, 
-       щоб дотягнутися до наступного кружечка */
     height: calc(100% + 5px); 
     width: 2px;
     background-color: var(--cv-timeline-line);
     z-index: 1;
 }
 
-/* Ховаємо лінію у ОСТАННЬОГО елемента (йому нікуди тягнутися вниз) */
-.experience-item:last-child::after {
-    display: none;
-}
+.experience-item:last-child::after { display: none; }
 
-/* Додатково: Стилі тексту, щоб все стояло рівно */
 .exp-header {
     display: flex;
     flex-direction: column;
     margin-bottom: 5px;
-    line-height: 1.2; /* Фіксуємо висоту рядка */
+    line-height: 1.2;
 }
 
 .exp-position {
@@ -576,55 +568,12 @@ textarea.form-control { resize: vertical; }
 .exp-desc { font-size: 13px; color: #64748b; line-height: 1.6; }
 
 /* ========================================= */
-/* 5. PRINT (ДРУК)                           */
+/* 5. АДАПТИВНІСТЬ (RESPONSIVE)              */
 /* ========================================= */
-@media print {
-    body { background: white; overflow: visible; }
-    .editor-sidebar, .no-print, ::-webkit-scrollbar { display: none !important; }
-    
-    .preview-area {
-        padding: 0;
-        background: white;
-        display: block;
-    }
-
-    .resume-paper {
-        margin: 0;
-        box-shadow: none;
-        width: 100%;
-        min-height: 100vh;
-        print-color-adjust: exact;
-        -webkit-print-color-adjust: exact;
-    }
-    
-    @page { margin: 0; }
-}
-
-@media screen and (max-width: 900px) {
-    .app-wrapper { flex-direction: column; height: auto; overflow: auto; }
-    .editor-sidebar { width: 100%; height: auto; box-shadow: none; overflow: visible; }
-    .editor-actions { position: static; width: 100%; }
-    .preview-area { padding: 20px; overflow: visible; }
-    .resume-paper { transform: scale(0.5); transform-origin: top left; width: 210mm; margin-bottom: -50%; }
-}
-/* ========================================= */
-/* 6. АДАПТИВНІСТЬ (RESPONSIVE DESIGN)       */
-/* ========================================= */
-
-/* 1. ПЛАНШЕТИ ТА МАЛЕНЬКІ НОУТБУКИ (до 1100px) */
-/* Тут ми змінюємо розташування: Редактор зверху, Резюме знизу */
 @media screen and (max-width: 1100px) {
-    body {
-        overflow: auto; /* Вмикаємо скрол для всієї сторінки */
-        height: auto;
-    }
-
-    .app-wrapper {
-        flex-direction: column; /* Ставимо блоки вертикально */
-        height: auto;
-    }
-
-    /* Редактор розтягуємо на всю ширину */
+    body { overflow: auto; height: auto; }
+    .app-wrapper { flex-direction: column; height: auto; }
+    
     .editor-sidebar {
         width: 100%;
         height: auto;
@@ -633,12 +582,8 @@ textarea.form-control { resize: vertical; }
         overflow: visible;
         box-shadow: none;
     }
-
-    #resume-form {
-        padding-bottom: 30px; /* Прибираємо великий відступ знизу */
-    }
-
-    /* Кнопки дій більше не прилипають до низу, а йдуть після форми */
+    #resume-form { padding-bottom: 30px; }
+    
     .editor-actions {
         position: static;
         width: 100%;
@@ -646,94 +591,66 @@ textarea.form-control { resize: vertical; }
         padding: 20px;
         margin-top: 20px;
     }
-
-    /* Зона прев'ю */
+    
     .preview-area {
         height: auto;
         padding: 40px 20px;
-        background-color: #cbd5e1; /* Темніший фон, щоб виділити папір */
-        align-items: flex-start; /* Вирівнювання по верху */
+        background-color: #cbd5e1;
+        align-items: flex-start;
     }
 }
 
-/* 2. МОБІЛЬНІ ТЕЛЕФОНИ (до 768px) */
 @media screen and (max-width: 768px) {
-    .editor-header h2 {
-        font-size: 18px;
-    }
-
-    .form-row {
-        flex-direction: column;
-        gap: 0;
-    }
-
+    .editor-header h2 { font-size: 18px; }
+    .form-row { flex-direction: column; gap: 0; }
+    
     .preview-area {
         padding: 30px 0;
-        overflow-x: hidden; /* Ховаємо скрол */
+        overflow-x: hidden;
         display: flex;
-        justify-content: center; /* Центруємо контейнер */
+        justify-content: center;
         align-items: flex-start;
-        background: #cbd5e1; /* Темніший фон, щоб краще бачити межі паперу */
+        background: #cbd5e1;
     }
 
     .resume-paper {
-        /* 1. ЖОРСТКА ФІКСАЦІЯ РОЗМІРІВ */
         width: 210mm;
-        min-width: 210mm; /* <--- ГОЛОВНЕ ВИПРАВЛЕННЯ: Не дає сплющувати аркуш */
+        min-width: 210mm;
         min-height: 297mm;
-        
-        /* 2. МАСШТАБУВАННЯ */
-        transform: scale(0.45); /* Зменшуємо до 45% */
-        transform-origin: top center; /* Точка зменшення - верхній центр */
-        
-        /* 3. КОМПЕНСАЦІЯ ВІДСТУПІВ */
-        /* Оскільки елемент зменшився, знизу залишається пусте місце. Підтягуємо його. */
+        transform: scale(0.45);
+        transform-origin: top center;
         margin-bottom: -130%; 
-        
-        /* Гарантоване центрування */
         margin-left: auto;
         margin-right: auto;
-        
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
 }
 
-/* 3. ТРОХИ БІЛЬШІ ТЕЛЕФОНИ (до 500px - iPhone Pro Max і т.д.) */
 @media screen and (max-width: 500px) {
     .resume-paper {
-        transform: scale(0.38); /* Ще трохи менше */
+        transform: scale(0.38);
         margin-bottom: -150%;
     }
 }
 
 /* ========================================= */
-/* 7. ФІКС ДЛЯ ДРУКУ (PRINT PERFECT)         */
+/* 6. ДРУК (PRINT) - ТУТ ОБ'ЄДНАНИЙ БЛОК     */
 /* ========================================= */
-/* Ці стилі гарантують, що при друку все буде ідеально */
 @media print {
-    @page {
-        margin: 0; /* Прибираємо поля принтера */
-        size: auto;
-    }
+    @page { margin: 0; size: auto; }
+    body { background: white; margin: 0; }
 
-    body {
-        background: white;
-        margin: 0;
-    }
-
-    /* Ховаємо все зайве */
+    /* ХОВАЄМО ЗАЙВЕ */
     .editor-sidebar, 
     .no-print, 
     .editor-actions, 
-    ::-webkit-scrollbar {
+    ::-webkit-scrollbar,
+    #react-job-assistant {
         display: none !important;
     }
     
-    .app-wrapper {
-        display: block;
-        height: auto;
-    }
-
+    .app-wrapper { display: block; height: auto; }
+    
     .preview-area {
         display: block;
         padding: 0;
@@ -743,19 +660,16 @@ textarea.form-control { resize: vertical; }
         overflow: visible;
     }
 
-    /* Скидаємо будь-які трансформації масштабу для друку */
     .resume-paper {
         transform: none !important;
         margin: 0 !important;
         box-shadow: none;
         width: 100%;
         min-height: 100vh;
-        /* Примусовий друк кольорів фону */
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
     }
     
-    /* Гарантуємо, що розриви сторінок не будуть рвати блоки */
     .experience-item, 
     .sidebar-section, 
     .main-section {
@@ -763,18 +677,127 @@ textarea.form-control { resize: vertical; }
     }
 }
 
-/* --- ВИПРАВЛЕННЯ ДЛЯ ТЕМНОЇ ТЕМИ (BOTTOM BAR & PREVIEW) --- */
-
-/* 1. Робимо нижню панель (де кнопки) темною */
+/* --- ДОДАТКОВІ ФІКСИ (Dark Theme & Hints) --- */
 [data-theme="dark"] .editor-actions {
-    background-color: var(--ui-sidebar); /* Такий самий колір, як у сайдбара */
-    border-top-color: var(--ui-border);  /* Темна рамка зверху */
+    background-color: var(--ui-sidebar);
+    border-top-color: var(--ui-border);
 }
 
-/* 2. Робимо фон за резюме (справа) дуже темним */
 [data-theme="dark"] .preview-area {
-    background-color: #0b1120; /* Майже чорний колір (Very Dark Slate) */
-    
-    /* Робимо сітку на фоні ледь помітною (темно-сірою) */
+    background-color: #0b1120;
     background-image: radial-gradient(#334155 1px, transparent 1px);
+}
+
+/* Підказки (Tags) */
+.suggestion-chip {
+    background-color: #e0e7ff;
+    color: #4338ca;
+    border: 1px solid #c7d2fe;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.suggestion-chip:hover {
+    background-color: #4338ca;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.suggestion-chip i { font-size: 10px; }
+
+[data-theme="dark"] .suggestion-chip {
+    background-color: #1e293b;
+    color: #818cf8;
+    border-color: #334155;
+}
+
+[data-theme="dark"] .suggestion-chip:hover {
+    background-color: #818cf8;
+    color: #0f172a;
+}
+
+/* --- RESUME SCORE WIDGET (Оновлено) --- */
+.score-widget {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Більший відступ між кругом і текстом */
+    
+    /* ПРИБРАЛИ ОБВОДКУ І ФОН */
+    background: transparent;
+    border: none;
+    padding: 0;
+    
+    margin-right: auto;
+    margin-left: 20px;
+}
+
+/* Кругова діаграма (трохи збільшимо) */
+.score-circle {
+    width: 48px;  /* Було 42 */
+    height: 48px; /* Було 42 */
+    border-radius: 50%;
+    background: conic-gradient(
+        var(--ui-accent) calc(var(--percent) * 1%), 
+        #e2e8f0 0
+    );
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: --percent 0.5s ease;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* Легка тінь тільки для круга */
+}
+
+/* Біла дірка всередині */
+.score-circle::before {
+    content: '';
+    position: absolute;
+    width: 38px;  /* Було 34 */
+    height: 38px; /* Було 34 */
+    background: white;
+    border-radius: 50%;
+}
+
+/* Відсотки всередині круга */
+#score-text {
+    position: relative;
+    z-index: 1;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--ui-accent);
+}
+
+.score-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Текст "Якість" (верхній рядок) */
+.score-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #94a3b8; /* Світло-сірий, щоб не відволікав */
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+/* Текст підказки "Додайте фото" (нижній рядок) */
+#score-message {
+    font-size: 14px !important; /* ЗБІЛЬШИЛИ (було 10px) */
+    font-weight: 700;           /* Зробили жирним */
+    line-height: 1.2;
+}
+
+/* Адаптація під темну тему */
+[data-theme="dark"] .score-circle::before {
+    background: var(--ui-sidebar); /* Темний центр круга */
 }

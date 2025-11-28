@@ -17,28 +17,43 @@
     
     <aside class="editor-sidebar no-print">
         <div class="editor-header">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-        <div>
+    <div class="header-top">
+        <div class="brand">
             <h2><i class="fa-solid fa-pen-nib"></i> CV Creator</h2>
-            <p>Професійний конструктор резюме</p>
+            <p class="header-subtitle">Професійний конструктор</p>
         </div>
-        <button id="theme-toggle" class="btn-theme" title="Змінити тему">
-            <i class="fa-solid fa-moon"></i>
-        </button>
+
+        <div style="display: flex; align-items: center; gap: 15px;">
+            
+            <div class="score-widget" title="Якість резюме">
+                <div class="score-circle" style="--percent: 0;">
+                    <span id="score-text">0%</span>
+                </div>
+                <div class="score-info">
+                    <span class="score-label" style="font-size: 10px;">Якість</span>
+                    <small id="score-message" style="font-size: 9px; color: #64748b;">Заповніть</small>
+                </div>
+            </div>
+
+            <button id="theme-toggle" class="btn-theme" title="Змінити тему">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+        </div>
     </div>
-    <div style="margin-top: 15px;">
-        <label style="font-size: 12px; font-weight: bold; color: #64748b;">Дизайн резюме:</label>
-            <select id="template-selector" class="form-control" style="margin-top: 5px;">
-                <option value="">Modern (Стандарт)</option>
-                <option value="template-minimal">Minimal (Журнальний)</option>
-                <option value="template-creative">Creative (Темний сайдбар)</option>
-                <option value="template-corporate">Corporate (Бізнес)</option>
-                <option value="template-elegant">Elegant (Вишуканий)</option>
-                <option value="template-tech">Tech (IT Style)</option>
-                <option value="template-compact">Compact (Щільний)</option>
-            </select>
+
+    <div style="margin-top: 15px; border-top: 1px solid var(--ui-border); padding-top: 10px;">
+        <label style="font-size: 11px; font-weight: bold; color: var(--ui-text-light); text-transform: uppercase;">Шаблон резюме:</label>
+        <select id="template-selector" class="form-control" style="margin-top: 5px;">
+            <option value="">Modern (Стандарт)</option>
+            <option value="template-minimal">Minimal (Журнальний)</option>
+            <option value="template-creative">Creative (Темний сайдбар)</option>
+            <option value="template-corporate">Corporate (Бізнес)</option>
+            <option value="template-elegant">Elegant (Вишуканий)</option>
+            <option value="template-tech">Tech (IT Style)</option>
+            <option value="template-compact">Compact (Щільний)</option>
+        </select>
     </div>
-    </div>
+</div>
 
         <form id="resume-form" onsubmit="return false;">
             
@@ -148,10 +163,12 @@
                 <div class="form-group">
                     <label>Навички (через кому)</label>
                     <textarea id="inp-skills" rows="3" class="form-control" placeholder="HTML, CSS, JS, Git"></textarea>
+                    
+                    <div id="skill-suggestions" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px;"></div>
                 </div>
                 <div class="form-group">
                     <label>Мови (через кому)</label>
-                    <input type="text" id="inp-languages" class="form-control" placeholder="Українська, Англійська B2"></input>
+                    <input type="text" id="inp-languages" class="form-control" placeholder="Українська, Англійська B2">
                 </div>
             </div>
 

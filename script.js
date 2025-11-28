@@ -319,6 +319,7 @@ function renderAll() {
 
     renderList('out-skills-list', appState.skills);
     renderList('out-lang-list', appState.languages);
+    calculateScore(); // Оновлюємо рейтинг
 }
 
 /* ============================================================
@@ -443,6 +444,7 @@ function restoreFormFromState() {
         inpPosX.value = appState.personal.photoConfig.x;
         inpPosY.value = appState.personal.photoConfig.y;
     }
+    
 }
 
 function validateBeforePrint() {
@@ -495,11 +497,220 @@ function applyTemplate(templateName) {
     }
 }
 
-// Додай цей виклик у функцію restoreFormFromState(), щоб шаблон відновлювався при F5
-// Знайди функцію restoreFormFromState і додай в кінець:
-/*
-    if (appState.template && templateSelector) {
-        templateSelector.value = appState.template;
-        applyTemplate(appState.template);
+/* ============================================================
+   9. РОЗУМНІ ПІДКАЗКИ НАВИЧОК (SMART SUGGESTIONS)
+   ============================================================ */
+
+// 1. Велика база знань: Професія (ключове слово) -> Список навичок
+const professionDatabase = {
+    // --- WEB DEVELOPMENT ---
+    "front": ["HTML5", "CSS3", "JavaScript (ES6+)", "React", "Vue.js", "Tailwind CSS", "SASS/SCSS", "Git", "Webpack", "Responsive Design", "Figma"],
+    "web": ["HTML5", "CSS3", "JavaScript", "WordPress", "PHP", "MySQL", "SEO Basics", "Bootstrap"],
+    "react": ["React.js", "Redux", "React Hooks", "Next.js", "TypeScript", "Material UI", "Jest", "Rest API"],
+    "angular": ["Angular", "TypeScript", "RxJS", "NgRx", "Angular CLI", "HTML/CSS"],
+    "vue": ["Vue.js", "Vuex", "Nuxt.js", "Vuetify", "JavaScript", "Composition API"],
+    "back": ["Node.js", "Python", "Java", "PHP", "SQL", "Docker", "Redis", "API REST/GraphQL", "Microservices", "AWS"],
+    "node": ["Node.js", "Express", "NestJS", "MongoDB", "PostgreSQL", "Socket.io", "TypeScript", "Docker"],
+    "php": ["PHP", "Laravel", "Symfony", "MySQL", "Composer", "HTML/CSS", "Git", "OOP"],
+    "full": ["JavaScript", "React", "Node.js", "SQL", "NoSQL", "Git", "Docker", "AWS", "CI/CD", "System Architecture"],
+
+    // --- PROGRAMMING LANGUAGES ---
+    "python": ["Python", "Django", "Flask", "FastAPI", "Pandas", "NumPy", "SQL", "Celery", "Git"],
+    "java": ["Java", "Spring Boot", "Hibernate", "Maven/Gradle", "SQL", "Kafka", "Microservices", "JUnit"],
+    "c#": ["C#", ".NET Core", "ASP.NET", "Entity Framework", "MSSQL", "Azure", "LINQ", "Visual Studio"],
+    "net": ["C#", ".NET Core", "ASP.NET", "MVC", "Web API", "Azure", "SQL Server"],
+    "golang": ["Go (Golang)", "Gin", "gRPC", "Docker", "Kubernetes", "PostgreSQL", "Concurrency"],
+    "ios": ["Swift", "SwiftUI", "UIKit", "Xcode", "CocoaPods", "Core Data", "TestFlight", "Objective-C"],
+    "android": ["Kotlin", "Java", "Android SDK", "Jetpack Compose", "Gradle", "Retrofit", "Room", "Firebase"],
+    "mobile": ["React Native", "Flutter", "Dart", "Firebase", "iOS/Android Deploy", "Mobile UI"],
+
+    // --- QA & TESTING ---
+    "qa": ["Manual Testing", "Test Cases", "Jira", "Bug Tracking", "SQL Basics", "Postman", "DevTools", "Agile"],
+    "test": ["Manual Testing", "Automation", "Selenium", "Cypress", "Python", "Jenkins", "API Testing"],
+    "auto": ["Selenium", "Playwright", "Cypress", "Java/Python", "Jenkins", "Git", "CI/CD", "Allure"],
+
+    // --- DESIGN & CREATIVE ---
+    "design": ["Figma", "Adobe Photoshop", "Adobe Illustrator", "UI/UX", "Prototyping", "Color Theory", "Typography", "User Research"],
+    "ui": ["Figma", "Sketch", "Wireframing", "Prototyping", "Mobile Design", "Web Design", "Design Systems"],
+    "graphic": ["Adobe Photoshop", "Illustrator", "InDesign", "Branding", "Layout Design", "Print Design", "Creativity"],
+    "motion": ["Adobe After Effects", "Cinema 4D", "Premiere Pro", "Animation", "3D Modeling", "Storyboarding"],
+    "video": ["Adobe Premiere Pro", "After Effects", "DaVinci Resolve", "Color Grading", "Sound Design", "Storytelling"],
+    "3d": ["Blender", "Maya", "3ds Max", "ZBrush", "Substance Painter", "Unreal Engine", "Modeling", "Texturing"],
+
+    // --- MARKETING & CONTENT ---
+    "marketing": ["Digital Marketing", "Google Analytics", "SEO", "Content Strategy", "Social Media", "Email Marketing", "PPC"],
+    "smm": ["Instagram", "Facebook Ads", "TikTok", "Copywriting", "Canva", "Targeting", "Community Management", "Stories"],
+    "seo": ["Google Search Console", "Ahrefs", "Semrush", "Keyword Research", "On-page SEO", "Link Building", "Technical SEO"],
+    "copy": ["Copywriting", "SEO Writing", "Editing", "Storytelling", "Creative Writing", "Blogging", "Research"],
+    "target": ["Facebook Ads", "Instagram Ads", "Google Ads", "Analytics", "Pixel Setup", "Budgeting", "A/B Testing"],
+
+    // --- DATA & ANALYTICS ---
+    "data": ["Python", "SQL", "Pandas", "Tableau", "Power BI", "Data Visualization", "Statistics", "Excel"],
+    "analy": ["SQL", "Excel (Advanced)", "Power BI", "Google Data Studio", "Business Analysis", "Requirements Gathering", "UML"],
+    "science": ["Machine Learning", "Deep Learning", "Python", "TensorFlow", "PyTorch", "NLP", "Big Data", "Spark"],
+
+    // --- MANAGEMENT & HR ---
+    "manager": ["Project Management", "Agile", "Scrum", "Kanban", "Jira", "Communication", "Risk Management", "Leadership"],
+    "product": ["Product Strategy", "User Stories", "Roadmapping", "A/B Testing", "Market Research", "Jira", "SQL"],
+    "hr": ["Recruiting", "Sourcing", "Interviewing", "Onboarding", "LinkedIn Recruiter", "HR Branding", "Labor Law"],
+    "recruit": ["Sourcing", "Boolean Search", "Screening", "Networking", "LinkedIn", "Negotiation", "Soft Skills"],
+
+    // --- SYSADMIN & DEVOPS ---
+    "admin": ["Windows Server", "Linux", "Active Directory", "Network Security", "Virtualization", "Bash/PowerShell", "Backup"],
+    "sys": ["Linux", "Ubuntu/CentOS", "Bash", "Networking (TCP/IP)", "VPN", "Monitoring", "Troubleshooting"],
+    "devops": ["Docker", "Kubernetes", "AWS/Azure", "Terraform", "Jenkins", "CI/CD", "Linux", "Ansible", "Prometheus"],
+
+    // --- SALES & FINANCE ---
+    "sale": ["B2B Sales", "Cold Calling", "CRM", "Negotiation", "Salesforce", "Lead Generation", "Presentation"],
+    "account": ["Accounting", "Excel", "1C", "QuickBooks", "Taxation", "Financial Reporting", "Auditing", "Attention to Detail"],
+    "finance": ["Financial Analysis", "Excel", "Budgeting", "Forecasting", "Risk Assessment", "Corporate Finance"],
+
+    // --- GENERAL / OFFICE ---
+    "secret": ["Office Management", "Communication", "MS Office", "Scheduling", "Email Correspondence", "Time Management"],
+    "support": ["Customer Service", "Zendesk", "Troubleshooting", "Communication", "Ticket System", "Empathy"],
+    "assist": ["Calendar Management", "Travel Planning", "Research", "Communication", "MS Office", "Organization"]
+};
+// 2. Знаходимо елементи
+const titleInput = document.getElementById('inp-title');
+const skillsInput = document.getElementById('inp-skills');
+const suggestionsContainer = document.getElementById('skill-suggestions');
+
+// 3. Слухаємо введення в полі "Посада"
+if (titleInput) {
+    titleInput.addEventListener('input', (e) => {
+        const text = e.target.value.toLowerCase();
+        
+        // Очищаємо підказки, якщо поле пусте
+        if (text.length < 2) {
+            suggestionsContainer.innerHTML = '';
+            return;
+        }
+
+        // Шукаємо збіги в базі
+        let foundSkills = new Set(); // Використовуємо Set, щоб уникнути дублікатів
+
+        // Перевіряємо кожне ключове слово в базі
+        Object.keys(professionDatabase).forEach(key => {
+            if (text.includes(key)) {
+                // Якщо введене слово містить ключ (наприклад "Junior Frontend" містить "front")
+                professionDatabase[key].forEach(skill => foundSkills.add(skill));
+            }
+        });
+
+        // Малюємо кнопки
+        renderSuggestions(Array.from(foundSkills));
+    });
+}
+
+// 4. Функція малювання кнопок
+function renderSuggestions(skills) {
+    suggestionsContainer.innerHTML = ''; // Очищаємо старі
+
+    if (skills.length > 0) {
+        // Додаємо заголовок "Підказки:"
+        const hintTitle = document.createElement('small');
+        hintTitle.textContent = "Натисніть, щоб додати:";
+        hintTitle.style.width = "100%";
+        hintTitle.style.color = "#94a3b8";
+        suggestionsContainer.appendChild(hintTitle);
     }
-*/
+
+    skills.forEach(skill => {
+        const btn = document.createElement('div');
+        btn.className = 'suggestion-chip';
+        btn.innerHTML = `<i class="fa-solid fa-plus"></i> ${skill}`;
+        
+        // Клік по підказці
+        btn.onclick = () => {
+            addSkill(skill);
+            btn.remove(); // Прибираємо кнопку після натискання
+        };
+
+        suggestionsContainer.appendChild(btn);
+    });
+}
+
+// 5. Функція додавання навички в textarea
+function addSkill(skill) {
+    let currentText = skillsInput.value;
+    
+    // Перевіряємо, чи вже є така навичка
+    if (currentText.toLowerCase().includes(skill.toLowerCase())) return;
+
+    if (currentText.trim().length > 0) {
+        // Якщо там вже щось є, додаємо кому
+        if (currentText.trim().endsWith(',')) {
+            skillsInput.value = currentText + ' ' + skill;
+        } else {
+            skillsInput.value = currentText + ', ' + skill;
+        }
+    } else {
+        skillsInput.value = skill;
+    }
+
+    // Тригеримо подію input, щоб оновилося резюме і зберігся стан
+    const event = new Event('input', { bubbles: true });
+    skillsInput.dispatchEvent(event);
+}
+
+/* ============================================================
+   10. ЛОГІКА РЕЙТИНГУ (SCORE CALCULATOR)
+   ============================================================ */
+function calculateScore() {
+    let score = 0;
+    let missing = [];
+
+    // Правила нарахування балів (Всього 100)
+    
+    // 1. Особисті дані (30 балів)
+    if (appState.personal.name.length > 5) score += 10;
+    if (appState.personal.title.length > 3) score += 10;
+    if (appState.personal.photo) score += 10;
+    else missing.push("фото");
+
+    // 2. Контакти (20 балів)
+    if (appState.contacts.phone.length > 5 && appState.contacts.email.includes('@')) score += 20;
+    else missing.push("контакти");
+
+    // 3. Про себе (10 балів)
+    if (appState.personal.summary.length > 30) score += 10;
+    else if (appState.personal.summary.length > 0) score += 5; // Половина, якщо мало тексту
+
+    // 4. Досвід (20 балів)
+    if (appState.jobs.length >= 1) score += 20;
+    else missing.push("досвід");
+
+    // 5. Навички (20 балів)
+    if (appState.skills.length > 10) score += 20;
+    else missing.push("навички");
+
+    // Оновлюємо UI
+    const circle = document.querySelector('.score-circle');
+    const text = document.getElementById('score-text');
+    const message = document.getElementById('score-message');
+
+    if (circle && text) {
+        // Оновлюємо CSS змінну для графіка
+        circle.style.background = `conic-gradient(${getScoreColor(score)} ${score}%, #e2e8f0 0)`;
+        text.innerText = score + '%';
+        text.style.color = getScoreColor(score);
+        
+        // Підказка, що покращити
+        if (score === 100) {
+            message.innerText = "Ідеально! 🔥";
+            message.style.color = "#22c55e"; // Green
+        } else {
+            // Показуємо перше, чого не вистачає
+            message.innerText = missing.length > 0 ? `Додайте ${missing[0]}` : "Покращіть опис";
+            message.style.color = "#64748b";
+        }
+    }
+}
+
+// Допоміжна функція кольору (Червоний -> Жовтий -> Зелений)
+function getScoreColor(score) {
+    if (score < 40) return '#ef4444'; // Red
+    if (score < 70) return '#eab308'; // Yellow
+    if (score < 100) return '#3b82f6'; // Blue
+    return '#22c55e'; // Green
+}
